@@ -7,22 +7,27 @@ workflows:
       flutter: stable
     scripts:
       - name: Create Flutter project structure
-        script: | 
+        script: |
           #!/usr/bin/env bash
           set -ex
-          echo "Backing up main.dart..."
+          echo 'Backing up main.dart...'
           cp lib/main.dart /tmp/main.dart.bak || true
-          echo "Running flutter create..."
+          echo 'Running flutter create...'
           flutter create --org com.tawasul --project-name tawasul_pro .
-          echo "Restoring main.dart..."
+          
+           echo 'Updating compileSdkVersion to 34...'
+           sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 34/g' android/app/build.gradle
+           sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
+          
+          echo 'Restoring main.dart...'
           cp /tmp/main.dart.bak lib/main.dart
           echo "Android folder created successfully"
           ls -la android
       - name: Get dependencies
-        script: | 
+        script: |
           flutter pub get
       - name: Build APK
-        script: | 
+        script: |
           flutter build apk --release
     artifacts:
       - build/**/outputs/**/*.apk
