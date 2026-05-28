@@ -20,8 +20,8 @@ workflows:
           flutter create --org com.tawasul --project-name tawasul_pro .
           
           echo 'Updating compileSdkVersion to 34...'
-          sed -i '' 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 34/g' android/app/build.gradle
-          sed -i '' 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
+          sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 34/g' android/app/build.gradle.kts
+          sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/g' android/app/build.gradle.kts
           
           echo 'Restoring your main.dart...'
           rm -rf lib
