@@ -16,9 +16,8 @@ workflows:
           flutter create --org com.tawasul --project-name tawasul_pro .
           
            echo 'Updating compileSdkVersion to 34...'
-           sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 34/g' android/app/build.gradle
-           sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
-          
+           sed -i '' 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 34/g' android/app/build.gradle
+           sed -i '' 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
           echo 'Restoring main.dart...'
           cp /tmp/main.dart.bak lib/main.dart
           echo "Android folder created successfully"
