@@ -7,9 +7,10 @@ workflows:
       flutter: stable
     scripts:
       - name: Create Flutter project structure
-        script: |
-          #!/usr/bin/env bash
-                echo 'Backing up your files...'
+            script: |
+      #!/usr/bin/env bash
+      set -ex
+      echo 'Backing up your files...'
       mv lib /tmp/lib_backup
       mv pubspec.yaml /tmp/pubspec_backup
       
@@ -29,6 +30,7 @@ workflows:
       mv /tmp/pubspec_backup pubspec.yaml
       
       echo "Android folder created successfully"
+      ls -la android
           echo "Android folder created successfully"
           ls -la android
       - name: Get dependencies
