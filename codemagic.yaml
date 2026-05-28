@@ -1,0 +1,22 @@
+workflows:
+  android-workflow:
+    name: Android Workflow
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+    scripts:
+      - name: Create Flutter project structure
+        script: |
+          flutter create --org com.tawasul --project-name tawasul_pro .
+          cp -f lib/main.dart lib/main.dart.bak || true
+          rm -rf lib/*
+          mv lib/main.dart.bak lib/main.dart
+      - name: Get dependencies
+        script: |
+          flutter pub get
+      - name: Build APK
+        script: |
+          flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.apk
