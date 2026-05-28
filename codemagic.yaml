@@ -10,16 +10,23 @@ workflows:
         script: |
           #!/usr/bin/env bash
           set -ex
-          echo 'Backing up main.dart...'
-          cp lib/main.dart /tmp/main.dart.bak || true
+          echo 'Moving main.dart to temp...'
+          mv lib /tmp/lib_backup
+          
+          echo 'Cleaning directory...'
+          rm -rf *
+          
           echo 'Running flutter create...'
           flutter create --org com.tawasul --project-name tawasul_pro .
           
-           echo 'Updating compileSdkVersion to 34...'
-           sed -i '' 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 34/g' android/app/build.gradle
-           sed -i '' 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
-          echo 'Restoring main.dart...'
-          cp /tmp/main.dart.bak lib/main.dart
+          echo 'Updating compileSdkVersion to 34...'
+          sed -i '' 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 34/g' android/app/build.gradle
+          sed -i '' 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
+          
+          echo 'Restoring your main.dart...'
+          rm -rf lib
+          mv /tmp/lib_backup lib
+          
           echo "Android folder created successfully"
           ls -la android
       - name: Get dependencies
