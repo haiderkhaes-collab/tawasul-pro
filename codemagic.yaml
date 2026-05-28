@@ -7,30 +7,28 @@ workflows:
       flutter: stable
     scripts:
       - name: Create Flutter project structure
-            script: |
-      #!/usr/bin/env bash
-      set -ex
-      echo 'Backing up your files...'
-      mv lib /tmp/lib_backup
-      mv pubspec.yaml /tmp/pubspec_backup
-      
-      echo 'Cleaning directory...'
-      rm -rf *
-      
-      echo 'Running flutter create...'
-      flutter create --org com.tawasul --project-name tawasul_pro .
-      
-      echo 'Updating compileSdkVersion to 34...'
-      sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 34/g' android/app/build.gradle.kts
-      sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/g' android/app/build.gradle.kts
-      
-      echo 'Restoring your files...'
-      rm -rf lib pubspec.yaml
-      mv /tmp/lib_backup lib
-      mv /tmp/pubspec_backup pubspec.yaml
-      
-      echo "Android folder created successfully"
-      ls -la android
+        script: |
+          #!/usr/bin/env bash
+          set -ex
+          echo 'Backing up your files...'
+          mv lib /tmp/lib_backup
+          mv pubspec.yaml /tmp/pubspec_backup
+          
+          echo 'Cleaning directory...'
+          rm -rf *
+          
+          echo 'Running flutter create...'
+          flutter create --org com.tawasul --project-name tawasul_pro .
+          
+          echo 'Updating compileSdkVersion to 34...'
+          sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 34/g' android/app/build.gradle.kts
+          sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/g' android/app/build.gradle.kts
+          
+          echo 'Restoring your files...'
+          rm -rf lib pubspec.yaml
+          mv /tmp/lib_backup lib
+          mv /tmp/pubspec_backup pubspec.yaml
+          
           echo "Android folder created successfully"
           ls -la android
       - name: Get dependencies
