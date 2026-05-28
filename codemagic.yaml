@@ -7,16 +7,22 @@ workflows:
       flutter: stable
     scripts:
       - name: Create Flutter project structure
-        script: |
+        script: | 
+          #!/usr/bin/env bash
+          set -ex
+          echo "Backing up main.dart..."
+          cp lib/main.dart /tmp/main.dart.bak || true
+          echo "Running flutter create..."
           flutter create --org com.tawasul --project-name tawasul_pro .
-          cp -f lib/main.dart lib/main.dart.bak || true
-          rm -rf lib/*
-          mv lib/main.dart.bak lib/main.dart
+          echo "Restoring main.dart..."
+          cp /tmp/main.dart.bak lib/main.dart
+          echo "Android folder created successfully"
+          ls -la android
       - name: Get dependencies
-        script: |
+        script: | 
           flutter pub get
       - name: Build APK
-        script: |
+        script: | 
           flutter build apk --release
     artifacts:
       - build/**/outputs/**/*.apk
