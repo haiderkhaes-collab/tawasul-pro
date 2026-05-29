@@ -20,9 +20,12 @@ workflows:
           echo 'Running flutter create...'
           flutter create --org com.tawasul --project-name tawasul_pro .
           
-          echo 'Updating compileSdkVersion to 36...'
+          echo 'Updating compileSdkVersion to 36 for ALL projects...'
           sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/g' android/app/build.gradle.kts
           sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 36/g' android/app/build.gradle.kts
+          
+          # هذا السطر الجديد - يجبر كل مكتبات Firebase تستخدم 36
+          echo 'subprojects { afterEvaluate { project -> if (project.hasProperty("android")) { project.android { compileSdk = 36 } } } }' >> android/build.gradle.kts
           
           echo 'Restoring your files...'
           rm -rf lib pubspec.yaml
