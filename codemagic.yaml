@@ -1,0 +1,36 @@
+workflows:
+  android-workflow:
+    name: Android Workflow
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      java: 17
+    scripts:
+      - name: Create Android project + Fix compileSdk 36
+        script: |
+          flutter create --org com.tawasul --project-name tawasul_pro --platforms=android .
+          
+          # Fix 1: app level
+          sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/g' android/app/build.gradle.kts
+          sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 36/g' android/app/build.gradle.kts
+          
+          # Fix 2: Force all plugins to 36
+          cat >> android/settings.gradle.kts << 'EOF'
+          
+          gradle.projectsEvaluated {
+              subprojects {
+                  if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
+                      extensions.configure<com.android.build.gradle.BaseExtension> {
+                          compileSdkVersion(36)
+                      }
+                  }
+              }
+          }
+          EOF
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.apk
