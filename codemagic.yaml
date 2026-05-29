@@ -20,19 +20,19 @@ workflows:
           echo 'Running flutter create...'
           flutter create --org com.tawasul --project-name tawasul_pro .
           
-          echo 'Setting compileSdkVersion 36 globally...'
-          sed -i '' '1i\
-          ext.compileSdkVersion = 36
-          ' android/build.gradle.kts
-          
-          echo 'Updating app compileSdk...'
-          sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/g' android/app/build.gradle.kts
-          sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 36/g' android/app/build.gradle.kts
+          echo 'Updating compileSdkVersion to 34...'
+          sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 34/g' android/app/build.gradle.kts
+          sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/g' android/app/build.gradle.kts
           
           echo 'Restoring your files...'
           rm -rf lib pubspec.yaml
           mv /tmp/lib_backup lib
           mv /tmp/pubspec_backup pubspec.yaml
+          
+          echo 'Downgrading Firebase to compatible versions...'
+          sed -i '' 's/firebase_core:.*/firebase_core: ^2.24.2/g' pubspec.yaml
+          sed -i '' 's/firebase_auth:.*/firebase_auth: ^4.15.3/g' pubspec.yaml
+          sed -i '' 's/cloud_firestore:.*/cloud_firestore: ^4.13.6/g' pubspec.yaml
           
           echo "Android folder created successfully"
           ls -la android
