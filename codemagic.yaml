@@ -15,8 +15,8 @@ workflows:
           sed -i '' 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/g' android/app/build.gradle.kts
           sed -i '' 's/targetSdk = flutter.targetSdkVersion/targetSdk = 36/g' android/app/build.gradle.kts
           
-          # Fix 2: Force compileSdk 36 for plugins - CORRECT POSITION
-          cat >> android/app/build.gradle.kts << 'EOF'
+          # Fix 2: Root build.gradle.kts - THIS IS THE CORRECT PLACE
+          cat >> android/build.gradle.kts << 'EOF'
           
           subprojects {
               afterEvaluate {
@@ -31,6 +31,6 @@ workflows:
       - name: Get dependencies
         script: flutter pub get
       - name: Build APK
-        script: flutter build apk --release --verbose
+        script: flutter build apk --release
     artifacts:
       - build/**/outputs/**/*.apk
